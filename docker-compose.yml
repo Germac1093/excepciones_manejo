@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    restart: always
+    environment:
+      - POSTGRES_USER=usuario
+      - POSTGRES_PASSWORD=usuario
+      - POSTGRES_DB=db_spring
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: spring_app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      # the host as protocol, instead of http.domain.path
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/db_spring
+      SPRING_DATASOURCE_USERNAME: usuario
+      SPRING_DATASOURCE_PASSWORD: usuario
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
