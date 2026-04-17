@@ -2,6 +2,8 @@
 FROM eclipse-temurin:17-jdk-jammy AS build
 WORKDIR /app
 COPY . .
+#providing permission 
+RUN chmod +x mvnw
 # Building the app without run tests
 RUN ./mvnw clean package -DskipTests
 
